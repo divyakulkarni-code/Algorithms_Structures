@@ -58,7 +58,6 @@ public class Timer {
         pause();
 
         for (int i = 0; i < n; i++) {
-            System.out.println("i =" +i);
             T tParameter = supplier.get();
             T resultPreFunction = null;
             U resultFunction = null;
@@ -71,7 +70,6 @@ public class Timer {
             resume();
 
             if (tParameter != null){
-                System.out.println("function");
                 resultFunction = function.apply((resultPreFunction != null) ? resultPreFunction : tParameter);
 
             }

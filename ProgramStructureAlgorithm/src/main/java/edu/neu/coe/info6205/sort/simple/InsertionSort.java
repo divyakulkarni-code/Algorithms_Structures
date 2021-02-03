@@ -56,15 +56,11 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
      */
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
-        //X[] destinationArray = Arrays.copyOf(xs, xs.length);
 
         for (int i = from; i < to; i++) {
-            System.out.println("i:" +i);
             for (int j = i; j > from &&
-                    helper.less(xs[j], xs[j - 1]); j--) {
-                System.out.println("j" + j);
+                    helper.less(xs[j], xs[j - 1]); j--)
                 helper.swap(xs, j -1, j);
-            }
         }
         return;
 
