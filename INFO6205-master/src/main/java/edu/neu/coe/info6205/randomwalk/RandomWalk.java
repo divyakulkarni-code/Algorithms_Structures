@@ -79,13 +79,22 @@ public class RandomWalk {
         if (args.length == 0)
             throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
         int m = Integer.parseInt(args[0]);
-        int n = 30;
+        int n = 10;
         if (args.length > 1) {
             n = Integer.parseInt(args[1]);
         }
 
-        double meanDistance = randomWalkMulti(m, n);
-        System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
+        // m values = 100, 200,300,400,500,600
+        for (int i = 100; i < 1000 ; i = i + 100) {
+            for (int j = 10; j<= 50; j = j+10) {
+                double meanDistance = randomWalkMulti(i, j);
+                System.out.println(i + " steps: " + meanDistance + " over " + j + " experiments");
+            }
+
+
+        }
+
+
     }
 
 }

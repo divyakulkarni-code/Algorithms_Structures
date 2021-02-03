@@ -15,7 +15,7 @@ import static edu.neu.coe.info6205.util.Utilities.formatWhole;
  * This class implements a simple Benchmark utility for measuring the running time of algorithms.
  * It is part of the repository for the INFO6205 class, taught by Prof. Robin Hillyard
  * <p>
- * It requires Java 8 as it uses function types, in particular, UnaryOperator&lt;T&gt; (a function of T => T),
+     * It requires Java 8 as it uses function types, in particular, UnaryOperator&lt;T&gt; (a function of T => T),
  * Consumer&lt;T&gt; (essentially a function of T => Void) and Supplier&lt;T&gt; (essentially a function of Void => T).
  * <p>
  * In general, the benchmark class handles three phases of a "run:"

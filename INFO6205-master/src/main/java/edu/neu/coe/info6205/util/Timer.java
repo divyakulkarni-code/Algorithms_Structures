@@ -1,5 +1,7 @@
 package edu.neu.coe.info6205.util;
 
+import java.time.Clock;
+import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -172,7 +174,8 @@ public class Timer {
      * @return the number of ticks for the system clock. Currently defined as nano time.
      */
     private static long getClock() {
-        // TO BE IMPLEMENTED
+        long startTime = System.nanoTime();
+        return startTime;
     }
 
     /**
@@ -183,7 +186,9 @@ public class Timer {
      * @return the corresponding number of milliseconds.
      */
     private static double toMillisecs(long ticks) {
-        // TO BE IMPLEMENTED
+
+        double toMilliSeconds = ticks/1000000 ;
+        return toMilliSeconds;
     }
 
     final static LazyLogger logger = new LazyLogger(Timer.class);
