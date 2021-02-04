@@ -12,14 +12,14 @@ public class Benchmark_InsertionSort {
 
     public static void main(String[] args){
         final List<Integer> listOrdered = new ArrayList<>();
-        for(int i=0; i< 5000; i++) {
+        for(int i=0; i< 80000; i++) {
             listOrdered.add(i);
         }
         Integer[] xsOrdered = listOrdered.toArray(new Integer[0]);
 
         final List<Integer> listReverse = new ArrayList<>();
 
-        for(int i=5000; i >0 ; i--) {
+        for(int i=80000; i >0 ; i--) {
             listReverse.add(i);
         }
         Integer[] xsReverse = listReverse.toArray(new Integer[0]);
