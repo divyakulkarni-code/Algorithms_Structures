@@ -9,7 +9,7 @@ public class UnionFindClient {
 
     public static void main(String[] args) {
 
-        int n = 30000;
+        int n = 100;
         int noOfTimesUnionPerformed = 0;
         int noOfPairsGenerated = 0;
         int x, y;
