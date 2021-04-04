@@ -151,22 +151,31 @@ public class SortBenchmark {
     void benchmarkStringSortersInstrumented(String[] words, int nWords, int nRuns) {
         logger.info("Testing with " + formatWhole(nRuns) + " runs of sorting " + formatWhole(nWords) + " words" + (config.isInstrumented() ? " and instrumented" : ""));
 
-        if (isConfigBenchmarkStringSorter("mergesort"))
-            runStringSortBenchmark(words, nWords, nRuns, new MergeSortBasic<>(nWords, config), timeLoggersLinearithmic);
+//        if (isConfigBenchmarkStringSorter("mergesort"))
+//            runStringSortBenchmark(words, nWords, nRuns, new MergeSortBasic<>(nWords, config), timeLoggersLinearithmic);
+//
+//        if (isConfigBenchmarkStringSorter("mergesort"))
+//            runStringSortBenchmark(words, nWords, nRuns, new MergeSortBasic<> (nWords, config), timeLoggersLinearithmic);
 
-        if (isConfigBenchmarkStringSorter("quicksort3way"))
-            runStringSortBenchmark(words, nWords, nRuns, new QuickSort_3way<>(nWords, config), timeLoggersLinearithmic);
+        System.out.println (getHelper ("insuranceOnOff"));
+        System.out.println (getHelper ("noCopyOnOff"));
 
-        if (isConfigBenchmarkStringSorter("quicksort"))
-            runStringSortBenchmark(words, nWords, nRuns, new QuickSort_DualPivot<>(nWords, config), timeLoggersLinearithmic);
+        runStringSortBenchmark(words, nWords, nRuns, new MergeSortBasic<> (nWords, config), timeLoggersLinearithmic);
 
-        if (isConfigBenchmarkStringSorter("introsort"))
-            runStringSortBenchmark(words, nWords, nRuns, new IntroSort<>(nWords, config), timeLoggersLinearithmic);
 
-        // NOTE: this is very slow of course, so recommendation is not to enable this option.
-        if (isConfigBenchmarkStringSorter("insertionsort"))
-            runStringSortBenchmark(words, nWords, nRuns / 10, new InsertionSort<>(nWords, config), timeLoggersQuadratic);
-    }
+//        if (isConfigBenchmarkStringSorter("quicksort3way"))
+//            runStringSortBenchmark(words, nWords, nRuns, new QuickSort_3way<>(nWords, config), timeLoggersLinearithmic);
+//
+//        if (isConfigBenchmarkStringSorter("quicksort"))
+//            runStringSortBenchmark(words, nWords, nRuns, new QuickSort_DualPivot<>(nWords, config), timeLoggersLinearithmic);
+//
+//        if (isConfigBenchmarkStringSorter("introsort"))
+//            runStringSortBenchmark(words, nWords, nRuns, new IntroSort<>(nWords, config), timeLoggersLinearithmic);
+//
+//        // NOTE: this is very slow of course, so recommendation is not to enable this option.
+//        if (isConfigBenchmarkStringSorter("insertionsort"))
+//            runStringSortBenchmark(words, nWords, nRuns / 10, new InsertionSort<>(nWords, config), timeLoggersQuadratic);
+}
 
     /**
      * Method to run a sorting benchmark, using an explicit preProcessor.
@@ -304,6 +313,10 @@ public class SortBenchmark {
 
     private boolean isConfigBenchmarkDateSorter(String option) {
         return isConfigBoolean("benchmarkdatesorters", option);
+    }
+
+    private boolean getHelper(String option) {
+        return isConfigBoolean("helper", option);
     }
 
     private boolean isConfigBoolean(String section, String option) {

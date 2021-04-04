@@ -279,7 +279,7 @@ public class InstrumentedHelperTest {
         int N = 8;
         final Helper<Integer> helper = new InstrumentedHelper<>("test", config);
         final PrivateMethodTester privateMethodTester = new PrivateMethodTester(helper);
-        Sort<Integer> s = new MergeSortBasic<>(helper);
+        Sort<Integer> s = new MergeSortBasic<>(helper, false, false);
         s.init(N);
         final Integer[] xs = helper.random(Integer.class, r -> r.nextInt(1000));
         s.sort(xs);
@@ -293,7 +293,7 @@ public class InstrumentedHelperTest {
         int m = 10;
         final Helper<Integer> helper = new InstrumentedHelper<>("test", config);
         final PrivateMethodTester privateMethodTester = new PrivateMethodTester(helper);
-        Sort<Integer> s = new MergeSortBasic<>(helper);
+        Sort<Integer> s = new MergeSortBasic<>(helper, false, false);
         s.init(N);
         for (int i = 0; i < m; i++) {
             final Integer[] xs = helper.random(Integer.class, r -> r.nextInt(1000));

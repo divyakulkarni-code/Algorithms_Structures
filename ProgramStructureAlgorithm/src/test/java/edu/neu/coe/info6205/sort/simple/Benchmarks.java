@@ -54,7 +54,7 @@ public class Benchmarks {
     public void testMergeSortBenchmark() {
         String description = "Merge sort";
         final Helper<Integer> helper = new BaseHelper<>(description, N);
-        final GenericSort<Integer> sort = new MergeSortBasic<>(helper);
+        final GenericSort<Integer> sort = new MergeSortBasic<>(helper, false, false);
         runBenchmark(description, sort, helper);
     }
 

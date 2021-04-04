@@ -25,7 +25,7 @@ public class MergeSortBasicTest {
         xs[2] = 2;
         xs[3] = 1;
         // NOTE: first we ensure that there is no cutoff to insertion sort going on.
-        final Config config = ConfigTest.setupConfig("true", "", "0", "1", "");
+        final Config config = ConfigTest.setupConfig("true", "", "0", "1", "", false, false);
         GenericSort<Integer> s = new MergeSortBasic<>(xs.length, config);
         Integer[] ys = s.sort(xs);
         assertEquals(Integer.valueOf(1), ys[0]);
@@ -35,15 +35,116 @@ public class MergeSortBasicTest {
     }
 
     @Test
+    public void testSortInsuranceOn() throws Exception {
+        int k = 7;
+        int N = (int) Math.pow(2, k);
+        int levels = k - 2;
+        final Config config = ConfigTest.setupConfig("true", "", "0", "1", "", true,false);
+        final Helper<Integer> helper = HelperFactory.create("merge sort", N, config);
+        Integer[] xs = new Integer[4];
+        xs[0] = 3;
+        xs[1] = 4;
+        xs[2] = 2;
+        xs[3] = 1;
+        // NOTE: first we ensure that there is no cutoff to insertion sort going on.
+
+        //GenericSort<Integer> s = new MergeSortBasic<>(xs.length, config);
+        MergeSortBasic<Integer> s = new MergeSortBasic<>(helper, config.getBoolean (Config.HELPER, ConfigTest.INSURANCE), config.getBoolean (Config.HELPER, ConfigTest.NOCOPY));
+        s.init(N);
+        Integer[] ys = s.sortWithNoCopyAndInsurance(xs);
+        for(int i:ys){
+            System.out.println (i);
+        }
+        assertEquals(Integer.valueOf(1), ys[0]);
+        assertEquals(Integer.valueOf(2), ys[1]);
+        assertEquals(Integer.valueOf(3), ys[2]);
+        assertEquals(Integer.valueOf(4), ys[3]);
+    }
+
+    @Test
+    public void testSortInsuranceOnNocopyOn() throws Exception {
+
+        int k = 7;
+        int N = (int) Math.pow(2, k);
+        // NOTE this depends on the cutoff value for merge sort.
+        int levels = k - 2;
+        final Config config = ConfigTest.setupConfig("true", "0", "1", "", "", true, false);
+        final Helper<Integer> helper = HelperFactory.create("merge sort", N, config);
+        System.out.println(helper);
+        MergeSortBasic<Integer> s = new MergeSortBasic<>(helper, config.getBoolean (Config.HELPER, ConfigTest.INSURANCE), config.getBoolean (Config.HELPER, ConfigTest.NOCOPY));
+        s.init(N);
+        final Integer[] xs = helper.random(Integer.class, r -> r.nextInt(10000));
+        assertEquals(Integer.valueOf(1360), xs[0]);
+        helper.preProcess(xs);
+        Integer[] ys = s.sortWithNoCopyAndInsurance(xs);
+        helper.postProcess(ys);
+        final PrivateMethodTester privateMethodTester = new PrivateMethodTester(helper);
+        final StatPack statPack = (StatPack) privateMethodTester.invokePrivate("getStatPack");
+        System.out.println(statPack);
+        final int compares = (int) statPack.getStatistics(InstrumentedHelper.COMPARES).mean();
+        final int inversions = (int) statPack.getStatistics(InstrumentedHelper.INVERSIONS).mean();
+        final int fixes = (int) statPack.getStatistics(InstrumentedHelper.FIXES).mean();
+        final int swaps = (int) statPack.getStatistics(InstrumentedHelper.SWAPS).mean();
+        final int copies = (int) statPack.getStatistics(InstrumentedHelper.COPIES).mean();
+        final int worstCompares = N * k - N + 1;
+        assertTrue (levels * 2 * N > copies);
+        assertTrue (inversions > fixes);
+    }
+
+    @Test
+    public void testSortInsuranceOnPartiallySortedArray() throws Exception {
+        Integer [] array = new Integer[128];    // Almost sorted Array of 100
+
+        array[0] = (int)(Math.random () * 10) + 1;
+
+        for (int a = 1; a < array.length; a++) {
+            array[a] = array[a-1] + (int)(Math.random() * 12) - 2;
+
+        }
+
+//        for (int i = 0; i < array.length-1; i++){
+//            System.out.println(array[i]);
+//        }
+
+        int k = 7;
+        int N = (int) Math.pow(2, k);
+        // NOTE this depends on the cutoff value for merge sort.
+        int levels = k - 2;
+        final Config config = ConfigTest.setupConfig("true", "0", "1", "", "", true, false);
+        final Helper<Integer> helper = HelperFactory.create("merge sort", N, config);
+        System.out.println(helper);
+        MergeSortBasic<Integer> s = new MergeSortBasic<>(helper, config.getBoolean (Config.HELPER, ConfigTest.INSURANCE), config.getBoolean (Config.HELPER, ConfigTest.NOCOPY));
+        s.init(N);
+        //final Integer[] xs = helper.random(Integer.class, r -> r.nextInt(10000));
+        //assertEquals(Integer.valueOf(1360), xs[0]);
+        helper.preProcess(array);
+        Integer[] ys = s.sortWithNoCopyAndInsurance(array);
+        helper.postProcess(ys);
+        final PrivateMethodTester privateMethodTester = new PrivateMethodTester(helper);
+        final StatPack statPack = (StatPack) privateMethodTester.invokePrivate("getStatPack");
+        System.out.println(statPack);
+        final int compares = (int) statPack.getStatistics(InstrumentedHelper.COMPARES).mean();
+        final int inversions = (int) statPack.getStatistics(InstrumentedHelper.INVERSIONS).mean();
+        final int fixes = (int) statPack.getStatistics(InstrumentedHelper.FIXES).mean();
+        final int swaps = (int) statPack.getStatistics(InstrumentedHelper.SWAPS).mean();
+        final int copies = (int) statPack.getStatistics(InstrumentedHelper.COPIES).mean();
+        final int worstCompares = N * k - N + 1;
+        assertTrue (levels * 2 * N > copies);
+        assertTrue (inversions > fixes);
+
+    }
+
+
+    @Test
     public void testSort2() throws Exception {
         int k = 7;
         int N = (int) Math.pow(2, k);
         // NOTE this depends on the cutoff value for merge sort.
         int levels = k - 2;
-        final Config config = ConfigTest.setupConfig("true", "0", "1", "", "");
+        final Config config = ConfigTest.setupConfig("true", "0", "1", "", "", false, false);
         final Helper<Integer> helper = HelperFactory.create("merge sort", N, config);
         System.out.println(helper);
-        Sort<Integer> s = new MergeSortBasic<>(helper);
+        Sort<Integer> s = new MergeSortBasic<>(helper, config.getBoolean (Config.HELPER, ConfigTest.INSURANCE), config.getBoolean (Config.HELPER, ConfigTest.NOCOPY));
         s.init(N);
         final Integer[] xs = helper.random(Integer.class, r -> r.nextInt(10000));
         assertEquals(Integer.valueOf(1360), xs[0]);
@@ -68,15 +169,15 @@ public class MergeSortBasicTest {
     public void testSort3() throws Exception {
         int k = 7;
         int N = (int) Math.pow(2, k);
-        final Helper<Integer> helper1 = HelperFactory.create("insertion sort", N, ConfigTest.setupConfig("true", "0", "1", "", ""));
+        final Helper<Integer> helper1 = HelperFactory.create("insertion sort", N, ConfigTest.setupConfig("true", "0", "1", "", "", false, false));
         System.out.println(helper1);
         final Integer[] xs = helper1.random(Integer.class, r -> r.nextInt(10000));
         assertEquals(Integer.valueOf(1360), xs[0]);
         new InsertionSort<Integer>(helper1).mutatingSort(xs);
         helper1.postProcess(xs);
-        final Helper<Integer> helper2 = HelperFactory.create("merge sort", N, ConfigTest.setupConfig("true", "", "0", "1", ""));
+        final Helper<Integer> helper2 = HelperFactory.create("merge sort", N, ConfigTest.setupConfig("true", "", "0", "1", "", false, false));
         System.out.println(helper2);
-        Sort<Integer> mergeSort = new MergeSortBasic<>(helper2);
+        Sort<Integer> mergeSort = new MergeSortBasic<>(helper2, config.getBoolean (Config.HELPER, ConfigTest.INSURANCE), config.getBoolean (Config.HELPER, ConfigTest.NOCOPY));
         mergeSort.init(N);
         helper2.preProcess(xs);
         Integer[] ys = mergeSort.sort(xs);

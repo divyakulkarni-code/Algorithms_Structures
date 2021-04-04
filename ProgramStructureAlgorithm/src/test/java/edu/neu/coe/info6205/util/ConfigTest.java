@@ -44,6 +44,24 @@ public class ConfigTest {
         assertFalse((Boolean) privateMethodTester.invokePrivate("unLogged", Config.HELPER + "." + SEED));
     }
 
+    public static Config setupConfig(final String instrumenting, final String seed, final String inversions, String cutoff, String interimInversions, boolean insuranceOnOff, boolean noCopyOnOff) {
+        final Ini ini = new Ini();
+        final String sInstrumenting = INSTRUMENTING;
+        ini.put(Config.HELPER, Config.INSTRUMENT, instrumenting);
+        ini.put(Config.HELPER, SEED, seed);
+        ini.put(Config.HELPER, CUTOFF, cutoff);
+        ini.put(Config.HELPER, INSURANCE, insuranceOnOff);
+        ini.put(Config.HELPER, NOCOPY, noCopyOnOff);
+        ini.put(sInstrumenting, INVERSIONS, inversions);
+        ini.put(sInstrumenting, INVERSIONS, inversions);
+        ini.put(sInstrumenting, SWAPS, instrumenting);
+        ini.put(sInstrumenting, COMPARES, instrumenting);
+        ini.put(sInstrumenting, COPIES, instrumenting);
+        ini.put(sInstrumenting, FIXES, instrumenting);
+        ini.put("huskyhelper", "countinteriminversions", interimInversions);
+        return new Config(ini);
+    }
+
     public static Config setupConfig(final String instrumenting, final String seed, final String inversions, String cutoff, String interimInversions) {
         final Ini ini = new Ini();
         final String sInstrumenting = INSTRUMENTING;
@@ -65,6 +83,8 @@ public class ConfigTest {
     public static final String INVERSIONS = InstrumentedHelper.INVERSIONS;
     public static final String SEED = "seed";
     public static final String CUTOFF = "cutoff";
+    public static final String INSURANCE = "insuranceOnOff";
+    public static final String NOCOPY = "noCopyOnOff";
     public static final String SWAPS = InstrumentedHelper.SWAPS;
     public static final String COMPARES = InstrumentedHelper.COMPARES;
     public static final String COPIES = InstrumentedHelper.COPIES;
